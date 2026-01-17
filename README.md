@@ -6,20 +6,20 @@ The project focuses on **clean UI design, smooth interactions, and a visually ri
 
  Features-
  
- Curated wallpaper collections by category  
- Smooth navigation with sticky navbar  
- Responsive image gallery layout  
- Full-screen wallpaper preview (modal view)  
- One-click wallpaper download option  
- Fully responsive for different screen sizes  
- Fast and lightweight (no frameworks)
+- Curated wallpaper collections by category  
+- Smooth navigation with sticky navbar  
+- Responsive image gallery layout  
+- Full-screen wallpaper preview (modal view)  
+- One-click wallpaper download option  
+- Fully responsive for different screen sizes  
+- Fast and lightweight (no frameworks)
 
  Tech Stack-
  
 
-HTML5 – structure and layout  
-CSS3 – modern styling, gradients, animations  
-JavaScript – dynamic rendering & interactivity  
+-HTML5 – structure and layout  
+-CSS3 – modern styling, gradients, animations  
+-JavaScript – dynamic rendering & interactivity  
 
  Screenshots
 
