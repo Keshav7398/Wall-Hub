@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallpaper Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #667eea;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-right: auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            margin: 3rem 0;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            border-left: 5px solid #667eea;
+            padding-left: 1rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .wallpaper-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            aspect-ratio: 16/9;
+        }
+
+        .wallpaper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .wallpaper-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .wallpaper-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 1rem;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .wallpaper-card:hover .wallpaper-overlay {
+            opacity: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .download-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: #667eea;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li class="logo">WallHub</li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#for-you">For You</a></li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#login">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero" id="home">
+        <h1>Discover Beautiful Wallpapers</h1>
+        <p>Explore our curated collection of stunning wallpapers</p>
+    </div>
+
+    <div class="container">
+        <!-- For You Section -->
+        <div class="section" id="for-you">
+            <h2>For You</h2>
+            <div class="gallery" id="for-you-gallery"></div>
+        </div>
+
+        <!-- Animals Section -->
+        <div class="section" id="animals">
+            <h2>Animals</h2>
+            <div class="gallery" id="animals-gallery"></div>
+        </div>
+
+        <!-- Nature Section -->
+        <div class="section" id="nature">
+            <h2>Nature</h2>
+            <div class="gallery" id="nature-gallery"></div>
+        </div>
+
+        <!-- Mountains Section -->
+        <div class="section" id="mountains">
+            <h2>Mountains</h2>
+            <div class="gallery" id="mountains-gallery"></div>
+        </div>
+
+        <!-- Abstract Section -->
+        <div class="section" id="abstract">
+            <h2>Abstract</h2>
+            <div class="gallery" id="abstract-gallery"></div>
+        </div>
+    </div>
+
+    <!-- Modal for full-size view -->
+    <div class="modal" id="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img id="modal-img" src="" alt="Full size wallpaper">
+        <a class="download-btn" id="download-link" download>Download</a>
+    </div>
+
+    <script>
+        // Sample wallpaper data (using placeholder images)
+        const wallpapers = {
+            forYou: [
+                { url: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809', title: 'Gradient Abstract' },
+                { url: 'https://images.unsplash.com/photo-1557683316-973673baf926', title: 'Blue Gradient' },
+                { url: 'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d', title: 'Purple Space' },
+                { url: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e', title: 'Cosmic Art' }
+            ],
+            animals: [
+                { url: 'https://images.unsplash.com/photo-1564349683136-77e08dba1ef7', title: 'Majestic Lion' },
+                { url: 'https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f', title: 'Cute Fox' },
+                { url: 'https://images.unsplash.com/photo-1484406566174-9da000fda645', title: 'Eagle Flight' },
+                { url: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee', title: 'Owl Eyes' }
+            ],
+            nature: [
+                { url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e', title: 'Forest Path' },
+                { url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05', title: 'Misty Lake' },
+                { url: 'https://images.unsplash.com/photo-1426604966848-d7adac402bff', title: 'Green Valley' },
+                { url: 'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f', title: 'Aurora Night' }
+            ],
+            mountains: [
+                { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4', title: 'Snowy Peaks' },
+                { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b', title: 'Mountain Lake' },
+                { url: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e', title: 'Alpine Sunset' },
+                { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4', title: 'Rocky Mountains' }
+            ],
+            abstract: [
+                { url: 'https://images.unsplash.com/photo-1550859492-d5da9d8e45f3', title: 'Liquid Colors' },
+                { url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe', title: 'Neon Waves' },
+                { url: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1', title: 'Geometric Art' },
+                { url: 'https://images.unsplash.com/photo-1557672199-6e8e8f0f1d8e', title: 'Color Splash' }
+            ]
+        };
+
+        function createWallpaperCard(wallpaper) {
+            const card = document.createElement('div');
+            card.className = 'wallpaper-card';
+            card.innerHTML = `
+                <img src="${wallpaper.url}" alt="${wallpaper.title}">
+                <div class="wallpaper-overlay">
+                    <h3>${wallpaper.title}</h3>
+                </div>
+            `;
+            card.onclick = () => openModal(wallpaper.url);
+            return card;
+        }
+
+        function loadGallery(galleryId, wallpaperArray) {
+            const gallery = document.getElementById(galleryId);
+            wallpaperArray.forEach(wallpaper => {
+                gallery.appendChild(createWallpaperCard(wallpaper));
+            });
+        }
+
+        function openModal(imageUrl) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            const downloadLink = document.getElementById('download-link');
+            
+            modalImg.src = imageUrl;
+            downloadLink.href = imageUrl;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Close modal on background click
+        document.getElementById('modal').onclick = function(e) {
+            if (e.target === this) closeModal();
+        };
+
+        // Load all galleries
+        loadGallery('for-you-gallery', wallpapers.forYou);
+        loadGallery('animals-gallery', wallpapers.animals);
+        loadGallery('nature-gallery', wallpapers.nature);
+        loadGallery('mountains-gallery', wallpapers.mountains);
+        loadGallery('abstract-gallery', wallpapers.abstract);
+    </script>
+</body>
+</html>
